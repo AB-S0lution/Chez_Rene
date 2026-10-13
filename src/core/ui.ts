@@ -166,7 +166,7 @@ export function mountLightbox(items: { id: string; kind: string; title: string; 
 
 // ---------- Photos d'illustration (Unsplash) ----------
 export const photoImg = (ph: Photo, cls = '') => `<img class="ph-img ${cls}" src="${ph.src}" alt="${esc(ph.alt)}" width="${ph.width}" height="${ph.height}" loading="lazy" decoding="async">`
-export const photoFigure = (ph: Photo) => `<figure class="ph" data-reveal>${photoImg(ph)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${ph.url}" target="_blank" rel="noopener">${esc(ph.credit)} / Unsplash</a></figcaption></figure>`
+export const photoFigure = (ph: Photo) => `<figure class="phfig" data-reveal>${photoImg(ph)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${ph.url}" target="_blank" rel="noopener">${esc(ph.credit)} / Unsplash</a></figcaption></figure>`
 /** Section with a row of illustrative photos. */
 export const photoBand = (list: Photo[], title: string, lead = '') => `<section class="section ph-band" aria-label="${esc(title)}">
   <div class="wrap">${sectionHead(title, lead)}

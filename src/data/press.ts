@@ -1,0 +1,7 @@
+// REAL press and public appearances (PLAN.md §2). One or two sentences at most; always link out.
+export interface PressItem { id: string; source: string; title: string; date: string; excerpt: string; url: string; isReal: true }
+export const press: PressItem[] = [
+  { id: 'pr1', source: 'Ouest-France', title: 'À Rennes, Chez René ravive l\'ambiance du bistrot de quartier à des prix modérés', date: '23 septembre 2025', excerpt: '« Nous voulions repartir d\'une page blanche et nous recentrer sur une offre de bistrot de quartier. » Nicolas Potier, gérant, à Ouest-France.', url: 'https://www.ouest-france.fr/bretagne/rennes-35000/a-rennes-chez-rene-ravive-lambiance-du-bistrot-de-quartier-5b846c4e-97bd-11f0-aae5-c246857d365e', isReal: true },
+  { id: 'pr2', source: 'actu.fr', title: 'Championnat de Bretagne de l\'œuf mayonnaise : la liste des restaurants participants dévoilée', date: 'avril 2026', excerpt: 'Chez René, Rennes, figure parmi les quatorze finalistes de la 5e édition.', url: 'https://actu.fr/bretagne/dinan_22050/championnat-de-bretagne-de-loeuf-mayonnaise-la-liste-des-restaurants-participants-a-ete-devoilee_64143360.html', isReal: true },
+  { id: 'pr3', source: 'Le Marché à Manger', title: 'Édition des 10 ans, La Criée, Rennes', date: '5 juillet 2026', excerpt: '« Une institution rennaise. » Publication de l\'organisateur, qui présente Chez René parmi les cuisines invitées.', url: 'https://www.instagram.com/p/DbJC6TwCJtL/', isReal: true },
+]

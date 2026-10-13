@@ -1,0 +1,12 @@
+# Chez René (démo)
+
+- **Concept** : « L'Enfilade », la maison parcourue salle par salle, deux ambiances Midi / Soir (lampe à franges = interrupteur, View Transition circulaire). Source de vérité : `PLAN.md`.
+- **Palette** : nuit #101018, velours-ombre #181828, velours #384870, velours-clair #486898, brume #A9B8D6, crème #FAF5EF, accent unique cognac #C8743F (midi : #9A4E26). Décor seulement : teal #2F6F6A, gilt #C9A55A, vin #6E1F2A, rose #D99AA5. Polices : Bodoni Moda / Josefin Sans / Karla (Fontsource).
+- **Lancer / vérifier** : `npm run dev` ; `npm run typecheck && npm run build` ; `npm run preview` (base `/Chez_Rene/`) ; contrôle base path comme `ci.yml` (aucun `src|href="/..."` hors `/Chez_Rene/`).
+- **Pages** : un `index.html` généré (`node scripts/gen-pages.mjs`, ne pas éditer à la main) + `src/pages/<nom>.ts`. Nouvelle page : l'ajouter dans le tableau de `scripts/gen-pages.mjs`, créer le module, relancer le script ; `vite.config.ts` découvre les dossiers `index.html` tout seul. Header/footer : `src/partials/*.html` (`{{base}}` remplacé par le plugin).
+- **Données** : `src/data/*.ts`, `isReal` sépare réel / exemple. Ne jamais publier : terrasse ou jardin, brunch, DJ, ouverture week-end, « primé / champion / lauréat », finaliste mondial, anciens textes de bar « Les Bricoles », liquidation de SARL Les Bricoles, ancien téléphone 02 99 67 23 75, Chez René du Havre, prénoms du personnel hors citations d'avis, e-mail, photos Novy Event. Seul wording ASOM autorisé : « Finaliste du Championnat de Bretagne de l'œuf mayonnaise (ASOM) 2026 ».
+- **Typographie** : tout HTML injecté passe par `setMain`/`typo()` (`src/core/dom.ts`) : espaces fines insécables avant `? ! ;`, insécables avant `:` et dans « ». Pas de tiret cadratin dans le texte du site.
+- **Mouvement** : `html.js-motion` (script inline de chaque page) active les états initiaux ; reduced-motion = état statique. `src/core/motion.ts` charge GSAP + Lenis à la demande. Enfilade : modes `pin` / `snap` / `list` choisis par `gsap.matchMedia` (home.ts). Pas de `transition: all`.
+- **Art** : tout est SVG original (`src/core/art.ts`). Aucun logo officiel redessiné, aucune photo.
+- **Particularités** : cave interactive dans `src/pages/bar.ts` (Flip, glisser avec inertie, flèches). Pas de rg dans cet environnement fiable : utiliser `grep -rn`. Phosphor Icons livre ses `.ttf`/`.svg` dans `dist/` (non chargés par les navigateurs).
+- **Git** : ne jamais committer ni pousser sans demande.

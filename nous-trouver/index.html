@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr" data-theme="soir">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Nous trouver | Chez René</title>
+    <meta name="description" content="6 boulevard René Laënnec, 35000 Rennes, près de Saint-Hélier. Plan, bus, métro, horaires et téléphone." />
+    <link rel="canonical" href="https://ab-s0lution.github.io/Chez_Rene/nous-trouver/" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#101018" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#FAF5EF" />
+    <meta name="color-scheme" content="dark light" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content="Chez René" />
+    <meta property="og:title" content="Nous trouver | Chez René" />
+    <meta property="og:description" content="6 boulevard René Laënnec, 35000 Rennes, près de Saint-Hélier. Plan, bus, métro, horaires et téléphone." />
+    <meta property="og:url" content="https://ab-s0lution.github.io/Chez_Rene/nous-trouver/" />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" type="image/svg+xml" href="{{base}}favicon.svg" />
+    <script>
+      (function () {
+        var d = document.documentElement, t = null;
+        try { t = localStorage.getItem('chezrene-theme'); } catch (e) {}
+        if (t !== 'midi' && t !== 'soir') {
+          var h = new Date().getHours(), dark = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches;
+          t = dark ? 'soir' : (h >= 6 && h < 17 ? 'midi' : 'soir');
+        }
+        d.setAttribute('data-theme', t);
+        d.classList.add('js');
+        if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) d.classList.add('js-motion');
+      })();
+    </script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":["Restaurant","BarOrPub"],"name":"Chez René","description":"Bistrot de quartier, bar et cocktails à Rennes. Cuisine maison de saison, carte qui change chaque semaine.","url":"https://ab-s0lution.github.io/Chez_Rene/","telephone":"+33981759350","priceRange":"€€","servesCuisine":"Française, bistrot","address":{"@type":"PostalAddress","streetAddress":"6 boulevard René Laënnec","postalCode":"35000","addressLocality":"Rennes","addressCountry":"FR"},"geo":{"@type":"GeoCoordinates","latitude":48.1095,"longitude":-1.66585},"sameAs":["https://www.instagram.com/chezrene_rennes/"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"12:00","closes":"15:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"19:00","closes":"01:00"}]}</script>
+  </head>
+  <body data-page="trouver" data-depth="1">
+    <!--HEADER-->
+    <main id="main" tabindex="-1"></main>
+    <!--FOOTER-->
+    <script type="module" src="/src/pages/trouver.ts"></script>
+  </body>
+</html>

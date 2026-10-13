@@ -3,7 +3,8 @@ import { faq } from '../data/faq'
 import { $, $$, esc, setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, reserveBand } from '../core/ui'
+import { pageHero, reserveBand, photoStrip } from '../core/ui'
+import { pick } from '../data/photos'
 
 const tags = ['Toutes', ...new Set(faq.flatMap((f) => f.tags))]
 setMain(`
@@ -18,6 +19,7 @@ ${tessBand(60, 15)}
     <div class="empty" id="faq-empty" hidden>Aucune question ne correspond. Appelez-nous au 09 81 75 93 50.</div>
   </div>
 </section>
+${photoStrip(pick('cave-etagere', 'oeuf-legumes', 'micro-scene'))}
 ${reserveBand('Une autre question ?')}`)
 boot()
 let tag = 'Toutes'

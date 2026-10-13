@@ -3,7 +3,8 @@ import { business } from '../data/business'
 import { setMain, url } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, sectionHead, hoursTable, statusPill } from '../core/ui'
+import { pageHero, sectionHead, hoursTable, statusPill, photoFigure } from '../core/ui'
+import { photo } from '../data/photos'
 
 setMain(`
 ${pageHero({ label: 'Réserver', title: 'Réserver une table.', lead: 'Le plus rapide, c\'est le téléphone. On vous répond du lundi au vendredi.', art: scene('comptoir', 300, '') })}
@@ -16,6 +17,7 @@ ${tessBand(60, 17)}
       <div class="card" style="margin-top:26px"><h2 style="font-size:1.4rem;margin-bottom:10px">Ou réserver en ligne</h2>
         <p class="muted">Le module de réservation de la maison est hébergé sur son site actuel.</p>
         <p style="display:flex;gap:10px;flex-wrap:wrap;margin:0"><a class="btn btn--sm" href="${business.bookingUrl}" target="_blank" rel="noopener">Réserver en ligne</a><a class="btn btn--sm" href="${business.mangeznotezUrl}" target="_blank" rel="noopener">MangezNotez</a></p></div>
+      <div class="side-photo">${photoFigure(photo('salle-soir'))}</div>
     </div>
     <div>
       ${statusPill()}

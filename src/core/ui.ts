@@ -146,14 +146,14 @@ export function mountQuotes(host: HTMLElement, list: Review[]) {
 }
 
 // ---------- Lightbox for gallery ----------
-export function mountLightbox(items: { id: string; kind: string; title: string; alt: string; ratio: number }[]) {
+export function mountLightbox(items: { id: string; kind: string; title: string; alt: string; ratio: number; img?: Photo }[]) {
   const dlg = document.createElement('dialog')
   dlg.className = 'lightbox'
   dlg.setAttribute('aria-label', 'Image agrandie')
   dlg.innerHTML = `<div class="lightbox__in"><div class="lb-art"></div><div class="lightbox__bar"><p class="lb-title" style="margin:0"></p><div style="display:flex;gap:8px"><button class="iconbtn" type="button" data-n="-1" aria-label="Précédente"><i class="ph ph-arrow-left"></i></button><button class="iconbtn" type="button" data-n="1" aria-label="Suivante"><i class="ph ph-arrow-right"></i></button><button class="iconbtn" type="button" data-close aria-label="Fermer"><i class="ph ph-x"></i></button></div></div></div>`
   document.body.append(dlg)
   let cur = 0
-  const show = (n: number) => { cur = (n + items.length) % items.length; const it = items[cur]; $('.lb-art', dlg)!.innerHTML = scene(it.kind, Math.round(400 / Math.max(it.ratio, 0.9)), it.alt); $('.lb-title', dlg)!.textContent = it.title }
+  const show = (n: number) => { cur = (n + items.length) % items.length; const it = items[cur]; $('.lb-art', dlg)!.innerHTML = it.img ? `<img class="lb-img" src="${it.img.src}" alt="${esc(it.img.alt)}" width="${it.img.width}" height="${it.img.height}" decoding="async">` : scene(it.kind, Math.round(400 / Math.max(it.ratio, 0.9)), it.alt); $('.lb-title', dlg)!.textContent = it.img ? `${it.title} · Photo d'illustration, ${it.img.credit} / Unsplash` : it.title }
   document.addEventListener('click', (e) => {
     const t = (e.target as HTMLElement).closest<HTMLElement>('[data-lb]')
     if (t) { show(Number(t.dataset.lb)); dlg.showModal(); return }
@@ -174,3 +174,12 @@ export const photoBand = (list: Photo[], title: string, lead = '') => `<section 
     <p class="note" style="margin-top:14px">Photos d'illustration Unsplash (licence Unsplash), pas des photos de la maison.</p>
   </div>
 </section>`
+/** Slim band of 2 to 4 illustrative photos (inner pages, legal pages, FAQ). */
+export const photoStrip = (list: Photo[], label = 'Ambiance de la maison') => `<section class="ph-strip" aria-label="${esc(label)}">
+  <div class="wrap"><div class="ph-strip__row" style="--n:${list.length}">${list.map((ph) => `<figure data-reveal>${photoImg(ph)}</figure>`).join('')}</div>
+  <p class="ph-strip__cap"><span class="ph__tag">Photo d'illustration</span> ${list.map((ph) => `<a href="${ph.url}" target="_blank" rel="noopener">${esc(ph.credit)}</a>`).join(', ')} / Unsplash. Pas des photos de la maison.</p></div>
+</section>`
+/** Card with a photo on top (team roles, job offers, rooms). */
+export const mediaCard = (ph: Photo, body: string) => `<article class="card card--media" data-reveal><div class="card__media">${photoImg(ph)}<span class="ph__tag ph__tag--over">Photo d'illustration</span></div><div class="card__body">${body}</div></article>`
+/** Photos for the three team roles (sample roles, illustrative photos). */
+export const rolePhoto: Record<string, string> = { k: 'cuisine-poele', b: 'cocktail-vintage', s: 'lampe-table' }

@@ -5,7 +5,8 @@ import { press } from '../data/press'
 import { setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, sectionHead, reserveBand, mountQuotes } from '../core/ui'
+import { pageHero, sectionHead, reserveBand, mountQuotes, photoStrip } from '../core/ui'
+import { pick } from '../data/photos'
 import { business } from '../data/business'
 
 const shown = reviews.filter((r) => r.publish)
@@ -19,6 +20,7 @@ ${tessBand(60, 7)}
     <p class="note" style="margin-top:14px">Notes relevées sur les sites cités. Elles évoluent.</p>
   </div>
 </section>
+${photoStrip(pick('salle-tamisee', 'oeuf-legumes', 'mousse', 'cocktail-coupe'), 'Ce que les avis décrivent')}
 <section class="section voice">
   <div class="wrap">${sectionHead('Un avis à la fois.')}<div class="voice__stage" style="grid-template-columns:1fr"><div id="quotes-avis"></div></div></div>
 </section>

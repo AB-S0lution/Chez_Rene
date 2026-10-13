@@ -1,10 +1,12 @@
 import '../style.css'
 import { setMain } from '../core/dom'
 import { boot } from '../core/shell'
-import { pageHero } from '../core/ui'
+import { pageHero, photoStrip } from '../core/ui'
+import { pick } from '../data/photos'
 
 setMain(`
 ${pageHero({ label: 'Confidentialité', title: 'Confidentialité.', lead: 'Ce site ne vous suit pas.' })}
+${photoStrip(pick('lampe-table', 'vin-pinot', 'lampe-fenetre'))}
 <section class="section"><div class="wrap prose">
   <h2>Cookies et traceurs</h2>
   <p>Ce site n'utilise aucun cookie, aucun outil de mesure d'audience et aucun traceur publicitaire. Il n'envoie aucune donnée à des tiers.</p>

@@ -1,6 +1,6 @@
 import '../style.css'
 import { posts } from '../data/journal'
-import { photos } from '../data/photos'
+import { postCover } from '../data/photos'
 import { $, $$, setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
@@ -13,7 +13,7 @@ ${tessBand(60, 9)}
 <section class="section">
   <div class="wrap">
     <div class="tabs" role="group" aria-label="Filtrer par thème">${tags.map((t, i) => `<button class="chip" type="button" data-t="${t}" aria-pressed="${i === 0}">${t}</button>`).join('')}</div>
-    <div class="grid3" id="posts" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))">${posts.map((p, i) => `<div data-tag="${p.tag}">${postCard(p, photos[(i * 7 + 3) % photos.length])}</div>`).join('')}</div>
+    <div class="grid3" id="posts" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr))">${posts.map((p) => `<div data-tag="${p.tag}">${postCard(p, postCover(p.slug))}</div>`).join('')}</div>
   </div>
 </section>
 ${reserveBand()}`)

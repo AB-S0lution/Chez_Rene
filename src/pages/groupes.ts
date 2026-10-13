@@ -5,7 +5,8 @@ import { business } from '../data/business'
 import { euro, setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, sectionHead, reserveBand } from '../core/ui'
+import { pageHero, sectionHead, reserveBand, photoBand } from '../core/ui'
+import { pick } from '../data/photos'
 
 setMain(`
 ${pageHero({ label: 'Repas de groupe', title: 'Une grande tablée, sans cérémonie.', lead: 'Anniversaires, séminaires, conférences, repas d\'équipe : Chez René accueille les groupes, sur demande.', art: scene('alcove', 300, '') })}
@@ -22,6 +23,7 @@ ${tessBand(60, 14)}
   <div class="wrap">${sectionHead('Des formules, à titre d\'exemple.', 'Exemple, sur devis. Les vraies formules de groupe se construisent avec la maison.')}
     <div class="grid3">${groupFormulas.map((g) => `<article class="card" data-reveal><div class="card__top"><h3 style="margin:0">${g.name}</h3><span class="sample">Exemple</span></div><p style="font-family:var(--font-display);font-size:2.4rem;margin:6px 0">${euro(g.price)}<small style="font-size:.4em"> par personne</small></p><ul class="muted">${g.includes.map((i) => `<li>· ${i}</li>`).join('')}</ul></article>`).join('')}</div></div>
 </section>
+${photoBand(pick('tablee', 'tablee-bougies', 'planche', 'salle-soir'), 'À plusieurs, autour de la table.', 'Planches à partager, grandes tablées, lumière basse. Photos d\'illustration.')}
 <section class="section velvet">
   <div class="wrap" style="display:grid;gap:20px;justify-items:start"><h2 style="font-size:clamp(2rem,5vw,3.6rem);max-width:16ch" data-reveal>Faire une demande de groupe.</h2>
     <p style="color:var(--muted)" data-reveal>Le formulaire de la maison est hébergé sur son site actuel. Pour une question rapide, appelez.</p>

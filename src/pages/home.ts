@@ -75,6 +75,7 @@ ${tessBand(60, 5)}
 <section class="enf enf--list" id="enfilade" aria-labelledby="enf-title">
   <div class="wrap enf__head"><span class="label">L'enfilade</span><h2 id="enf-title" style="margin-top:12px">Entrez, on vous fait traverser la maison.</h2><p>Des salles qui se suivent, du comptoir à la cave. La lumière baisse d'une pièce à l'autre.</p></div>
   <div class="enf__stage" id="enf-stage">
+    <p class="enf__hint" aria-hidden="true"><i class="ph ph-hand-swipe-left"></i> Glissez pour traverser les salles</p>
     <div class="enf__track" id="enf-track">${rooms}</div>
     <div class="enf__dim" aria-hidden="true"></div>
     <div class="enf__nav"><div class="enf__floor" aria-hidden="true"><i></i></div>
@@ -193,7 +194,12 @@ async function heroIntro() {
     .to(chars, { yPercent: 0, opacity: 1, duration: 1, stagger: 0.045 }, 0.55)
     .to('.hero__copy > *', { opacity: 1, y: 0, duration: 0.9, stagger: 0.09 }, 0.9)
     .set('.curtain', { display: 'none' })
-  gsap.to(mirror, { yPercent: -10, scale: 0.94, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } })
+  // Parallax: full on desktop, a lighter drift (no scale, smaller travel) on phones and tablets.
+  const mm = gsap.matchMedia()
+  mm.add({ desk: '(min-width: 900px) and (hover: hover)', touch: '(max-width: 899px), (hover: none)' }, (ctx) => {
+    const { desk } = ctx.conditions as { desk: boolean; touch: boolean }
+    gsap.to(mirror, { yPercent: desk ? -10 : -5, scale: desk ? 0.94 : 1, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: desk ? true : 0.6 } })
+  })
 }
 
 async function enfilade() {
@@ -210,7 +216,16 @@ async function enfilade() {
     const c = ctx.conditions as { pin: boolean; snap: boolean; list: boolean }
     enf.classList.remove('enf--list', 'enf--snap', 'enf--pin')
     if (c.list) { enf.classList.add('enf--list'); return }
-    if (c.snap) { enf.classList.add('enf--snap'); return }
+    if (c.snap) {
+      // Touch: native swipe with scroll-snap (no pin). A thin progress bar under the cards follows the swipe.
+      enf.classList.add('enf--snap')
+      const bar = $('.enf__floor i')!
+      let raf = 0
+      const onScroll = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => { const max = track.scrollWidth - track.clientWidth; gsap.set(bar, { scaleX: max > 0 ? Math.max(0.08, track.scrollLeft / max) : 1 }) }) }
+      track.addEventListener('scroll', onScroll, { passive: true })
+      onScroll()
+      return () => { track.removeEventListener('scroll', onScroll); gsap.set(bar, { clearProps: 'all' }) }
+    }
     enf.classList.add('enf--pin')
     const dist = () => track.scrollWidth - innerWidth
     const bar = $('.enf__floor i')!
@@ -218,7 +233,7 @@ async function enfilade() {
     const dim = $('.enf__dim')!
     const tween = gsap.to(track, { x: () => -dist(), ease: 'none' })
     const st = ScrollTrigger.create({
-      trigger: stage, start: 'top top', end: () => `+=${dist()}`, pin: true, scrub: 1, animation: tween, invalidateOnRefresh: true,
+      trigger: stage, start: 'top top', end: () => `+=${dist()}`, pin: true, anticipatePin: 1, scrub: 1, animation: tween, invalidateOnRefresh: true,
       onUpdate: (self) => {
         gsap.set(bar, { scaleX: self.progress })
         gsap.set(dim, { opacity: self.progress * 0.42 })

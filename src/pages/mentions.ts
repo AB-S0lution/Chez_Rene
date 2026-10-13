@@ -2,10 +2,12 @@ import '../style.css'
 import { business } from '../data/business'
 import { setMain } from '../core/dom'
 import { boot } from '../core/shell'
-import { pageHero } from '../core/ui'
+import { pageHero, photoStrip } from '../core/ui'
+import { pick, photos } from '../data/photos'
 
 setMain(`
 ${pageHero({ label: 'Mentions légales', title: 'Mentions légales.', lead: 'Informations sur l\'établissement et sur ce site de démonstration.' })}
+${photoStrip(pick('lampe-fenetre', 'cave-rayon', 'lampes-comptoir'))}
 <section class="section"><div class="wrap prose">
   <h2>Établissement</h2>
   <dl class="legalgrid">
@@ -21,7 +23,7 @@ ${pageHero({ label: 'Mentions légales', title: 'Mentions légales.', lead: 'Inf
   <h2>Hébergement</h2>
   <p>Le site est hébergé par GitHub Pages (GitHub, Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis).</p>
   <h2>Crédits</h2>
-  <p>Illustrations, motifs et animations : créations originales pour ce site. Aucune photographie de l'établissement n'est utilisée. Typographies : Bodoni Moda, Josefin Sans et Karla (licence SIL OFL). Icônes : Phosphor Icons (licence MIT).</p>
+  <p>Illustrations, motifs et animations : créations originales pour ce site. Aucune photographie de l'établissement n'est utilisée. Photos d'illustration : ${photos.length} photos Unsplash (licence Unsplash), de ${[...new Set(photos.map((p) => p.credit))].filter((c) => c !== 'Unsplash').join(', ')} et d'autres contributeurs Unsplash ; elles ne montrent ni la maison, ni ses plats, ni son équipe. Typographies : Bodoni Moda, Josefin Sans et Karla (licence SIL OFL). Icônes : Phosphor Icons (licence MIT).</p>
   <h2>Avis et presse</h2>
   <p>Les avis sont cités avec la mention de la plateforme et sans nom. Les extraits de presse sont courts et renvoient vers leur source.</p>
 </div></section>`)

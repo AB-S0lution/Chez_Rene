@@ -3,7 +3,8 @@ import { upcoming, pastReal, typeLabel, type EventType } from '../data/events'
 import { $, $$, esc, frDate, setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, sectionHead, reserveBand, posterCard } from '../core/ui'
+import { pageHero, sectionHead, reserveBand, posterCard, photoBand } from '../core/ui'
+import { pick } from '../data/photos'
 import { business } from '../data/business'
 
 const types: (EventType | 'all')[] = ['all', 'blindtest', 'karaoke', 'cocktail']
@@ -31,6 +32,7 @@ ${tessBand(60, 6)}
       <div style="display:grid;gap:14px">${pastReal.map((p) => `<article class="card" data-reveal><span class="label">${frDate(p.date, true)}</span><h3 style="margin-top:8px">${esc(p.title)}</h3>${p.theme ? `<span class="chip" style="margin-bottom:10px">${p.theme}</span>` : ''}<p class="muted">${esc(p.blurb)}</p><a href="${p.link}" target="_blank" rel="noopener">Voir la source</a></article>`).join('')}</div></div>
   </div>
 </section>
+${photoBand(pick('micro-scene', 'cocktail-vintage', 'micro-vintage', 'biere-verser'), 'Micro, cocktails et blind test.', 'L\'esprit des soirées en semaine, en photos d\'illustration.')}
 <section class="section">
   <div class="wrap">${sectionHead('Soirées passées.', 'Illustrations d\'ambiance, en attendant les photos de la maison.')}
     <div class="grid3">${['lamp', 'cocktail', 'pub'].map((k, i) => `<div class="card" style="padding:0;overflow:hidden;aspect-ratio:4/3" data-reveal>${scene(k, 300, ['Lumière basse', 'Cocktail de saison', 'Dernière salle'][i])}</div>`).join('')}</div></div>

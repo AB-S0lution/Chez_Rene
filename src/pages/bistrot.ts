@@ -7,7 +7,8 @@ import { photos } from '../data/photos'
 import { photoBand } from '../core/ui'
 import { scene, tessBand, plate } from '../core/art'
 import { boot } from '../core/shell'
-import { pageHero, sectionHead, reserveBand } from '../core/ui'
+import { pageHero, sectionHead, reserveBand, mediaCard, rolePhoto } from '../core/ui'
+import { photo } from '../data/photos'
 
 const kinds = ['comptoir', 'tables', 'alcove', 'pub', 'cave']
 setMain(`
@@ -81,7 +82,7 @@ ${photoBand(photos.filter((p) => p.theme === 'salle' || p.theme === 'cuisine'), 
 <section class="section section--alt">
   <div class="wrap">
     ${sectionHead('L\'équipe.', 'Trois métiers, un même sourire. Les prénoms restent à la maison.')}
-    <div class="grid3">${team.map((t) => `<div class="card" data-reveal><h3><i class="ph ${t.icon}" aria-hidden="true"></i> ${t.title}</h3><p class="muted">${t.text}</p></div>`).join('')}</div>
+    <div class="grid3">${team.map((t) => mediaCard(photo(rolePhoto[t.id]), `<h3><i class="ph ${t.icon}" aria-hidden="true"></i> ${t.title}</h3><p class="muted">${t.text}</p>`)).join('')}</div>
     <div class="stats" style="margin-top:36px">${stats.slice(0, 4).map((s) => `<div class="stat" data-reveal><b>${s.value}${s.suffix}</b><span>${s.label}</span></div>`).join('')}</div>
   </div>
 </section>

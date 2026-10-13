@@ -5,7 +5,8 @@ import { business } from '../data/business'
 import { $, $$, setMain } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot, currentTheme, setTheme } from '../core/shell'
-import { pageHero, sectionHead, reserveBand, dishRows, mountArdoise } from '../core/ui'
+import { pageHero, sectionHead, reserveBand, dishRows, mountArdoise, photoBand } from '../core/ui'
+import { pick } from '../data/photos'
 
 setMain(`
 ${pageHero({ label: 'Les cartes', title: 'Midi, soir, et l\'ardoise.', lead: 'Une carte courte qui change chaque semaine. Tournez le cordon de la lampe pour passer du midi au soir.', art: scene('ardoise', 300, '') })}
@@ -31,6 +32,7 @@ ${tessBand(60, 4)}
   </div>
 </section>
 
+${photoBand(pick('oeuf-legumes', 'planche', 'cuisine-marmites', 'tomates-mozza', 'mousse', 'tarte-myrtille', 'dessert-assiette', 'marche-paniers'), 'Dans l\'assiette.', 'Terre, mer et veggies, des produits frais de saison. Photos d\'illustration, pas les plats de la maison.')}
 <section class="section section--alt">
   <div class="wrap">
     ${sectionHead('L\'archive de l\'ardoise.', 'Dix semaines d\'exemple, toutes saisons, filtrables par thème. Exemple pour la démonstration.')}

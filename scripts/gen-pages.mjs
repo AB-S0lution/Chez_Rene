@@ -79,6 +79,8 @@ for (const [path, mod, title, desc] of pages) {
         d.setAttribute('data-theme', t);
         d.classList.add('js');
         if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) d.classList.add('js-motion');
+        // Fail-safe: if the page module never boots, drop the hidden initial states so content shows.
+        setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion'); }, 4000);
       })();
     </script>${jsonld}
   </head>

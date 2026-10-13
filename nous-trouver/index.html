@@ -28,6 +28,8 @@
         d.setAttribute('data-theme', t);
         d.classList.add('js');
         if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) d.classList.add('js-motion');
+        // Fail-safe: if the page module never boots, drop the hidden initial states so content shows.
+        setTimeout(function () { if (!d.classList.contains('motion-ready')) d.classList.remove('js-motion'); }, 4000);
       })();
     </script>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":["Restaurant","BarOrPub"],"name":"Chez René","description":"Bistrot de quartier, bar et cocktails à Rennes. Cuisine maison de saison, carte qui change chaque semaine.","url":"https://ab-s0lution.github.io/Chez_Rene/","telephone":"+33981759350","priceRange":"€€","servesCuisine":"Française, bistrot","address":{"@type":"PostalAddress","streetAddress":"6 boulevard René Laënnec","postalCode":"35000","addressLocality":"Rennes","addressCountry":"FR"},"geo":{"@type":"GeoCoordinates","latitude":48.1095,"longitude":-1.66585},"sameAs":["https://www.instagram.com/chezrene_rennes/"],"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"12:00","closes":"15:00"},{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"19:00","closes":"01:00"}]}</script>

@@ -1,7 +1,7 @@
 // Page shell behaviour: theme (lamp switch with View Transition), navigation, header, buttons, reveals.
 import { $, $$, reduceMotion } from './dom'
 import { getStatus, todayIndex } from './status'
-import { initButtons, initReveals, initCounters, loadKit } from './motion'
+import { initButtons, initReveals, initCounters, loadKit, pauseOffscreenLoops } from './motion'
 
 type Theme = 'midi' | 'soir'
 const root = document.documentElement
@@ -96,8 +96,10 @@ export function boot(opts: BootOpts = {}) {
   initNav()
   paintStatus()
   setInterval(paintStatus, 60_000)
+  root.classList.add('motion-ready')
   initButtons()
   initReveals()
+  pauseOffscreenLoops()
   if (opts.counters !== false) initCounters()
   // Smooth scroll + ScrollTrigger on every page (lazy). Anchors go through Lenis when present.
   loadKit().then(({ lenis, ScrollTrigger }) => {

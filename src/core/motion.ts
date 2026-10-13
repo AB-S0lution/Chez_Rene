@@ -19,6 +19,8 @@ export function loadKit(): Promise<Kit> {
       import('gsap'), import('gsap/ScrollTrigger'), import('gsap/SplitText'), import('gsap/Flip'),
     ])
     gsap.registerPlugin(ScrollTrigger, SplitText, Flip)
+    // Mobile URL-bar show/hide must not trigger a full refresh (jank + jumping pins).
+    ScrollTrigger.config({ ignoreMobileResize: true })
     let lenis: Kit['lenis'] = null
     if (!reduceMotion() && !isCoarse()) {
       const { default: Lenis } = await import('lenis')
@@ -50,6 +52,18 @@ export function initReveals(root: ParentNode = document) {
   const io = new IntersectionObserver((entries) => {
     entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target) } })
   }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 })
+  els.forEach((e) => io.observe(e))
+  // Fail-safe: anything already at or above the fold after 2.5 s is shown, whatever the observer did
+  // (tall elements on short landscape phones can miss the threshold). Printing shows everything.
+  setTimeout(() => els.forEach((e) => { if (!e.classList.contains('is-in') && e.getBoundingClientRect().top < innerHeight) { e.classList.add('is-in'); io.unobserve(e) } }), 2500)
+  addEventListener('beforeprint', () => els.forEach((e) => e.classList.add('is-in')))
+}
+
+/** Pause infinite CSS loops (sound waves, bouncing ball, sway) while they are off screen. */
+export function pauseOffscreenLoops(root: ParentNode = document) {
+  const els = $$<HTMLElement>('.wave, .lyric, .bubbles', root)
+  if (!els.length || !('IntersectionObserver' in window)) return
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => en.target.classList.toggle('is-paused', !en.isIntersecting)), { rootMargin: '80px' })
   els.forEach((e) => io.observe(e))
 }
 

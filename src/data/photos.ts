@@ -1,6 +1,6 @@
 // Photos d'illustration Unsplash (licence Unsplash), pas des photos du commerce.
 // Sample imagery only: none of these pictures shows Chez René, its dishes or its team.
-export type PhotoTheme = 'salle' | 'bar' | 'cave' | 'assiette' | 'cuisine' | 'marche'
+export type PhotoTheme = 'salle' | 'bar' | 'cave' | 'assiette' | 'cuisine' | 'marche' | 'soiree'
 export interface Photo { slug: string; src: string; alt: string; credit: string; url: string; width: number; height: number; theme: PhotoTheme }
 const B = import.meta.env.BASE_URL
 const p = (slug: string, alt: string, credit: string, id: string, width: number, height: number, theme: PhotoTheme): Photo => ({ slug, src: `${B}photos/${slug}.jpg`, alt, credit, url: `https://unsplash.com/photos/${id}`, width, height, theme })
@@ -30,6 +30,22 @@ export const photos: Photo[] = [
   p('marche-paniers', 'Paniers de légumes de saison au marché', 'Unsplash', 'GPxxXAbzsXU', 1200, 900, 'marche'),
   p('cagette', 'Cagette en bois remplie de fruits et légumes', 'Unsplash', 'OqXXSSPs4zw', 1200, 1600, 'marche'),
   p('marche-etal', 'Étal de fruits et légumes frais en plein air', 'Unsplash', '2WmVYrCwEKg', 1000, 750, 'marche'),
+  p('salle-soir', 'Salle de restaurant le soir, tables dressées sous une lumière chaude', 'Jahanzeb Ahsan', 'VQsV9yDspnw', 1200, 750, 'salle'),
+  p('vitrine-nuit', 'Fenêtres à petits carreaux éclairées de l\'intérieur, la nuit', 'Jahanzeb Ahsan', 'Q8rj4DYlcIE', 1200, 800, 'salle'),
+  p('tablee', 'Longue tablée dressée avec assiettes blanches, bougies et carafes', 'Nadia Valko', '0hAdietsUrE', 1200, 800, 'salle'),
+  p('tablee-bougies', 'Longue table en bois couverte de plats à partager à la bougie', 'Stephanie McCabe', 'U3zasaqWD-I', 1200, 1800, 'salle'),
+  p('planche', 'Planche de charcuteries, fromages, olives et pain grillé', 'Ana Maltez', 'FHNJO45Qx_k', 1200, 800, 'assiette'),
+  p('micro-vintage', 'Micro chromé vintage sur pied, fond violet', 'Matt Botsford', 'OKLqGsCT8qs', 1200, 675, 'soiree'),
+  p('micro-scene', 'Micro sur scène dans un faisceau de lumière bleue', 'Brunxs', 'dtqlaz4HyHw', 1200, 801, 'soiree'),
 ]
 export const photo = (slug: string) => photos.find((x) => x.slug === slug) ?? photos[0]
 export const byTheme = (t: PhotoTheme) => photos.filter((x) => x.theme === t)
+export const pick = (...slugs: string[]) => slugs.map(photo)
+/** Cover photo for each journal post (by slug). */
+const postCovers: Record<string, string> = {
+  'pourquoi-rene': 'vitrine-nuit', 'oeuf-mayo-championnat-bretagne': 'oeuf-legumes', 'pas-de-carte-des-vins': 'cave-etagere',
+  'la-terrine-de-rene': 'planche', 'mon-oeuf-se-met-au-vert': 'tomates-mozza', 'les-cocos-de-paimpol': 'marche-paniers',
+  'cinq-salles-une-enfilade': 'salle-tamisee', 'saint-helier-quartier-village': 'lampe-fenetre', 'blind-test-mode-d-emploi': 'micro-scene',
+  'gin-tonic-notre-passion': 'gin-verre',
+}
+export const postCover = (slug: string) => photo(postCovers[slug] ?? 'salle-soir')

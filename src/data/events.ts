@@ -22,6 +22,8 @@ export const upcoming: Evenement[] = [
   e('e14', 'karaoke', '2026-12-16', '20h30', 'Karaoké', 'Chansons de fin d\'année', 'Un dernier micro avant les fêtes.'),
   e('e15', 'cocktail', '2026-12-18', '19h30', 'Soirée cocktails', 'Dernier verre avant les fêtes', 'Le bar propose ses recettes préférées de l\'année.'),
   e('e16', 'blindtest', '2027-01-14', '20h30', 'Blind test', 'Rentrée', 'On remet les équipes en jeu.'),
+  e('e17', 'karaoke', '2027-01-20', '20h30', 'Karaoké', 'Tubes de l\'année', 'Les refrains de l\'année passée, au micro.'),
+  e('e18', 'cocktail', '2027-01-22', '19h30', 'Soirée cocktails', 'Agrumes d\'hiver', 'Pamplemousse, orange sanguine et cocktails frais pour janvier.'),
 ]
 
 export const pastReal: Evenement[] = [

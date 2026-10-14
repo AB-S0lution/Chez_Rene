@@ -221,22 +221,42 @@ export function scene(kind: string, h = 300, label = ''): string {
 }
 
 /** Radial schematic: distances are straight-line from the address (not a map). */
-export function radialMap(items: { name: string; meters: number; kind: 'bus' | 'metro' | 'lieu' }[]): string {
-  const cx = 300, cy = 260, k = 0.26
-  let g = ''
-  ;[250, 500, 750, 1000].forEach((m) => { g += `<circle cx="${cx}" cy="${cy}" r="${m * k}" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-dasharray="4 6"/><text x="${cx + 4}" y="${cy - m * k + 14}" font-size="11" fill="currentColor" fill-opacity=".6" font-family="Josefin Sans Variable, sans-serif">${m} m</text>` })
-  let a = -Math.PI / 2 + 0.2
+type MapItem = { name: string; meters: number; kind: 'bus' | 'metro' | 'lieu' }
+export const mapColor = (k: MapItem['kind']) => (k === 'metro' ? '#D99AA5' : k === 'bus' ? '#C8743F' : '#8FB04A')
+
+/** Radial "distance" diagram. Wide = named labels (tablet/desktop); compact = numbered dots, names in a legend (phones). */
+export function radialMap(items: MapItem[], compact = false): string {
+  const cx = compact ? 180 : 300, cy = compact ? 180 : 260, k = compact ? 0.16 : 0.26
+  const ringFont = compact ? 12 : 11
+  let rings = '', lines = '', dots = '', labels = ''
+  ;[250, 500, 750, 1000].forEach((m) => { rings += `<circle cx="${cx}" cy="${cy}" r="${m * k}" fill="none" stroke="currentColor" stroke-opacity=".22" stroke-dasharray="4 6"/><text x="${cx + 4}" y="${cy - m * k + 14}" font-size="${ringFont}" fill="currentColor" fill-opacity=".6" font-family="Josefin Sans Variable, sans-serif">${m}\u00a0m</text>` })
   const step = (Math.PI * 2) / items.length
-  items.forEach((it) => {
-    const x = cx + Math.cos(a) * it.meters * k, y = cy + Math.sin(a) * it.meters * k
-    const col = it.kind === 'metro' ? '#D99AA5' : it.kind === 'bus' ? '#C8743F' : '#8FB04A'
-    g += `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="${col}" stroke-opacity=".35"/><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="6" fill="${col}"/>`
-    const anchor = Math.cos(a) >= 0 ? 'start' : 'end'
-    g += `<text x="${(x + (Math.cos(a) >= 0 ? 11 : -11)).toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="${anchor}" font-size="12.5" fill="currentColor" font-family="Karla Variable, sans-serif">${it.name}</text>`
-    a += step
+  const pts = items.map((it, i) => { const a = -Math.PI / 2 + 0.2 + i * step; return { ...it, a, x: cx + Math.cos(a) * it.meters * k, y: cy + Math.sin(a) * it.meters * k } })
+  // label boxes: flip to the other side of the dot when they would hit another dot or label
+  type Box = { x1: number; x2: number; y1: number; y2: number }
+  const boxes: Box[] = []
+  const hits = (bx: Box, self: number) => boxes.some((o) => bx.x1 < o.x2 && bx.x2 > o.x1 && bx.y1 < o.y2 && bx.y2 > o.y1) || pts.some((q, j) => j !== self && q.x > bx.x1 - 7 && q.x < bx.x2 + 7 && q.y > bx.y1 - 7 && q.y < bx.y2 + 7)
+  let minX = 0, maxX = cx * 2
+  pts.forEach((p, i) => {
+    const col = mapColor(p.kind)
+    lines += `<line x1="${cx}" y1="${cy}" x2="${p.x.toFixed(1)}" y2="${p.y.toFixed(1)}" stroke="${col}" stroke-opacity=".35"/>`
+    if (compact) {
+      dots += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="12" fill="${col}"/><text x="${p.x.toFixed(1)}" y="${(p.y + 4.5).toFixed(1)}" text-anchor="middle" font-size="13" font-weight="700" fill="#101018" font-family="Karla Variable, sans-serif">${i + 1}</text>`
+      return
+    }
+    dots += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="6" fill="${col}"/>`
+    const w = p.name.length * 6.6
+    const box = (right: boolean): Box => (right ? { x1: p.x + 11, x2: p.x + 11 + w, y1: p.y - 9, y2: p.y + 5 } : { x1: p.x - 11 - w, x2: p.x - 11, y1: p.y - 9, y2: p.y + 5 })
+    let right = Math.cos(p.a) >= 0
+    if (hits(box(right), i) && !hits(box(!right), i)) right = !right
+    const b = box(right)
+    boxes.push(b); minX = Math.min(minX, b.x1 - 8); maxX = Math.max(maxX, b.x2 + 8)
+    labels += `<text x="${(right ? b.x1 : b.x2).toFixed(1)}" y="${(p.y + 4).toFixed(1)}" text-anchor="${right ? 'start' : 'end'}" font-size="12.5" fill="currentColor" font-family="Karla Variable, sans-serif">${p.name}</text>`
   })
-  g += `<circle cx="${cx}" cy="${cy}" r="12" fill="#C8743F"/><circle cx="${cx}" cy="${cy}" r="5" fill="#FAF5EF"/><text x="${cx}" y="${cy + 30}" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" font-family="Karla Variable, sans-serif">6 bd Laënnec</text>`
-  return `<svg viewBox="0 0 600 520" role="img" aria-label="Schéma des arrêts et lieux autour du 6 boulevard René Laënnec, distances à vol d'oiseau" focusable="false">${g}</svg>`
+  const home = `<circle cx="${cx}" cy="${cy}" r="12" fill="#C8743F"/><circle cx="${cx}" cy="${cy}" r="5" fill="#FAF5EF"/><text x="${cx}" y="${cy + 30}" text-anchor="middle" font-size="13" font-weight="700" fill="currentColor" font-family="Karla Variable, sans-serif">6 bd Laënnec</text>`
+  const vb = compact ? `0 0 ${cx * 2} ${cy * 2}` : `${Math.floor(minX)} 0 ${Math.ceil(maxX - minX)} 520`
+  const label = `Schéma des arrêts et lieux autour du 6 boulevard René Laënnec, distances à vol d'oiseau${compact ? ' ; les numéros renvoient à la liste' : ''}`
+  return `<svg viewBox="${vb}" role="img" aria-label="${label}" focusable="false">${rings}${lines}${labels}${dots}${home}</svg>`
 }
 
 export const faviconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#384870"/><ellipse cx="32" cy="32" rx="22" ry="26" fill="none" stroke="#FAF5EF" stroke-width="1.6"/><ellipse cx="32" cy="32" rx="19.5" ry="23.5" fill="none" stroke="#FAF5EF" stroke-width=".9"/><text x="32" y="44" text-anchor="middle" font-family="Georgia, serif" font-size="34" fill="#FAF5EF">R</text></svg>`

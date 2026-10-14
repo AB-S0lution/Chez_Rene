@@ -3,7 +3,7 @@ import { posts } from '../data/journal'
 import { esc, frDate, setMain, url } from '../core/dom'
 import { scene, tessBand } from '../core/art'
 import { boot } from '../core/shell'
-import { reserveBand, postCard, photoImg } from '../core/ui'
+import { reserveBand, postCard, photoImg, creditLabel } from '../core/ui'
 import { postCover } from '../data/photos'
 
 const slug = new URLSearchParams(location.search).get('p') ?? posts[0].slug
@@ -16,7 +16,7 @@ setMain(`
   <span class="label" style="margin-top:22px">${esc(p.tag)} · ${frDate(p.date)}</span><h1 id="page-title" data-reveal>${esc(p.title)}</h1><p>${esc(p.excerpt)}</p></div></section>
 ${tessBand(60, 12)}
 <article class="section"><div class="wrap article">
-  <figure class="article__cover" data-reveal>${photoImg(cover)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${cover.url}" target="_blank" rel="noopener">${esc(cover.credit)} / Unsplash</a>, pas une photo de la maison.</figcaption></figure>
+  <figure class="article__cover" data-reveal>${photoImg(cover)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${cover.url}" target="_blank" rel="noopener">${esc(creditLabel(cover))}</a>, pas une photo de la maison.</figcaption></figure>
   ${p.body.map((t) => `<p data-reveal>${esc(t)}</p>`).join('')}
   <p class="note">${p.grounded ? 'Article appuyé sur des faits publics et sourcés.' : 'Article d\'exemple pour la démonstration.'}</p>
 </div></article>

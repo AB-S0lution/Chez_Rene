@@ -153,7 +153,7 @@ export function mountLightbox(items: { id: string; kind: string; title: string; 
   dlg.innerHTML = `<div class="lightbox__in"><div class="lb-art"></div><div class="lightbox__bar"><p class="lb-title" style="margin:0"></p><div style="display:flex;gap:8px"><button class="iconbtn" type="button" data-n="-1" aria-label="Précédente"><i class="ph ph-arrow-left"></i></button><button class="iconbtn" type="button" data-n="1" aria-label="Suivante"><i class="ph ph-arrow-right"></i></button><button class="iconbtn" type="button" data-close aria-label="Fermer"><i class="ph ph-x"></i></button></div></div></div>`
   document.body.append(dlg)
   let cur = 0
-  const show = (n: number) => { cur = (n + items.length) % items.length; const it = items[cur]; $('.lb-art', dlg)!.innerHTML = it.img ? `<img class="lb-img" src="${it.img.src}" alt="${esc(it.img.alt)}" width="${it.img.width}" height="${it.img.height}" decoding="async">` : scene(it.kind, Math.round(400 / Math.max(it.ratio, 0.9)), it.alt); $('.lb-title', dlg)!.textContent = it.img ? `${it.title} · Photo d'illustration, ${it.img.credit} / Unsplash` : it.title }
+  const show = (n: number) => { cur = (n + items.length) % items.length; const it = items[cur]; $('.lb-art', dlg)!.innerHTML = it.img ? `<img class="lb-img" src="${it.img.src}" alt="${esc(it.img.alt)}" width="${it.img.width}" height="${it.img.height}" decoding="async">` : scene(it.kind, Math.round(400 / Math.max(it.ratio, 0.9)), it.alt); $('.lb-title', dlg)!.textContent = it.img ? `${it.title} · Photo d'illustration, ${creditLabel(it.img)}` : it.title }
   document.addEventListener('click', (e) => {
     const t = (e.target as HTMLElement).closest<HTMLElement>('[data-lb]')
     if (t) { show(Number(t.dataset.lb)); dlg.showModal(); return }
@@ -166,7 +166,9 @@ export function mountLightbox(items: { id: string; kind: string; title: string; 
 
 // ---------- Photos d'illustration (Unsplash) ----------
 export const photoImg = (ph: Photo, cls = '') => `<img class="ph-img ${cls}" src="${ph.src}" alt="${esc(ph.alt)}" width="${ph.width}" height="${ph.height}" loading="lazy" decoding="async">`
-export const photoFigure = (ph: Photo) => `<figure class="phfig" data-reveal>${photoImg(ph)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${ph.url}" target="_blank" rel="noopener">${esc(ph.credit)} / Unsplash</a></figcaption></figure>`
+/** "Auteur / Unsplash", or just "Unsplash" when the photographer is not named. */
+export const creditLabel = (ph: Photo) => (ph.credit === 'Unsplash' ? 'Unsplash' : `${ph.credit} / Unsplash`)
+export const photoFigure = (ph: Photo) => `<figure class="phfig" data-reveal>${photoImg(ph)}<figcaption><span class="ph__tag">Photo d'illustration</span> <a href="${ph.url}" target="_blank" rel="noopener">${esc(creditLabel(ph))}</a></figcaption></figure>`
 /** Section with a row of illustrative photos. */
 export const photoBand = (list: Photo[], title: string, lead = '') => `<section class="section ph-band" aria-label="${esc(title)}">
   <div class="wrap">${sectionHead(title, lead)}

@@ -2,7 +2,7 @@ import '../style.css'
 import { business } from '../data/business'
 import { stops, landmarks } from '../data/transport'
 import { setMain } from '../core/dom'
-import { scene, tessBand, radialMap } from '../core/art'
+import { scene, tessBand, radialMap, mapColor } from '../core/art'
 import { boot } from '../core/shell'
 import { pageHero, sectionHead, reserveBand, hoursTable, statusPill, photoStrip } from '../core/ui'
 import { pick } from '../data/photos'
@@ -28,7 +28,9 @@ ${tessBand(60, 16)}
 ${photoStrip(pick('vitrine-nuit', 'lampes-comptoir', 'bar-tabourets'), 'En arrivant le soir')}
 <section class="section section--alt">
   <div class="wrap">${sectionHead('Autour de la maison.', 'Un schéma, pas une carte : les points sont placés selon leur distance à vol d\'oiseau.')}
-    <div class="map" style="color:var(--text)" data-reveal>${radialMap(items)}</div>
+    <div class="map map--wide" style="color:var(--text)" data-reveal>${radialMap(items)}</div>
+    <div class="map-compact" data-reveal><div class="map" style="color:var(--text)">${radialMap(items, true)}</div>
+      <ol class="map__legend">${items.map((it, i) => `<li><span class="map__num" style="background:${mapColor(it.kind)}" aria-hidden="true">${i + 1}</span><span>${it.name}</span><span class="muted">${it.meters}\u00a0m</span></li>`).join('')}</ol></div>
     <p class="note" style="margin-top:12px">Orange : bus. Rose : métro. Vert : lieux du quartier.</p></div>
 </section>
 ${reserveBand()}`)

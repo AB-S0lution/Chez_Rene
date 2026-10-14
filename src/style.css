@@ -92,7 +92,7 @@ input, select, textarea { font: inherit; font-size: 16px; color: inherit; }
 .skip { position: fixed; left: 12px; top: -80px; z-index: 100; background: var(--accent); color: var(--on-accent); padding: 10px 16px; border-radius: 999px; transition: top 0.2s var(--ease-out); }
 .skip:focus { top: 12px; }
 .wrap { width: min(1240px, 100% - 40px); margin-inline: auto; }
-.label { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.74rem; font-weight: 600; color: var(--accent); }
+.label { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.22em; font-size: 0.78rem; font-weight: 600; color: var(--accent); }
 .muted { color: var(--muted); }
 .ph { font-size: 1.15em; vertical-align: -0.15em; }
 
@@ -371,7 +371,7 @@ button.chip[aria-pressed="true"], button.chip[aria-selected="true"] { background
 .poster p { font-size: 0.95rem; margin: 0; color: #eadfd2; }
 .poster__art { position: absolute; right: -18px; top: 14px; width: 150px; opacity: 0.9; z-index: -1; }
 .poster .tag { align-self: flex-start; }
-.tag { display: inline-flex; padding: 3px 12px; border-radius: 999px; border: 1px solid currentColor; font-family: var(--font-label); font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; }
+.tag { display: inline-flex; padding: 3px 12px; border-radius: 999px; border: 1px solid currentColor; font-family: var(--font-label); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; }
 @media (hover: hover) and (pointer: fine) { .poster:hover { transform: rotate(-2.5deg) translateY(-4px); } .poster:nth-child(2):hover { transform: rotate(2deg) translateY(-4px); } }
 .wave { display: flex; gap: 3px; align-items: flex-end; height: 30px; margin-top: 10px; }
 .wave i { width: 4px; height: 100%; background: #f0d79a; border-radius: 2px; transform-origin: bottom; scale: 1 0.3; }
@@ -464,7 +464,7 @@ button.chip[aria-pressed="true"], button.chip[aria-selected="true"] { background
 .dishrow h4 { font-family: var(--font-display); font-size: 1.28rem; font-weight: 500; }
 .dishrow .price { font-family: var(--font-body); font-weight: 700; font-size: 1.15rem; font-variant-numeric: lining-nums; white-space: nowrap; }
 .dishrow p { grid-column: 1; margin: 0; color: var(--muted); font-size: 0.95rem; max-width: 60ch; }
-.dishrow .badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+.dishrow .badges { grid-column: 1 / -1; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
 .formula-table { display: grid; gap: 10px; margin-bottom: 28px; }
 @media (min-width: 640px) { .formula-table { grid-template-columns: repeat(3, 1fr); } }
 .formula-table .f { border: 1px solid var(--accent); border-radius: var(--r); padding: 16px 20px; }
@@ -523,6 +523,12 @@ dialog.lightbox::backdrop { background: rgb(8 8 14 / 0.88); }
 .tbl th { font-family: var(--font-label); text-transform: uppercase; letter-spacing: 0.14em; font-size: 0.72rem; color: var(--accent); }
 .map { border-radius: var(--r); overflow: hidden; border: 1px solid var(--line); background: var(--surface); }
 .map svg { width: 100%; height: auto; }
+.map--wide { max-width: 860px; margin-inline: auto; }
+.map-compact { display: none; }
+.map__legend { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 2px; }
+.map__legend li { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--line); }
+.map__num { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #101018; font-weight: 700; font-size: 0.85rem; }
+@media (max-width: 599px) { .map--wide { display: none; } .map-compact { display: block; } }
 .prose h2 { font-size: 1.7rem; margin: 2em 0 0.5em; } .prose h2:first-child { margin-top: 0; }
 .prose { max-width: 72ch; }
 .legalgrid { display: grid; grid-template-columns: auto 1fr; gap: 8px 22px; max-width: 72ch; }
@@ -663,7 +669,7 @@ html { scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + 16p
   .footer__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (min-width: 1000px) { .grid3, .posters { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 640px) and (max-width: 859px) { .voice__stage { grid-template-columns: 1fr; } .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bento .b1 { grid-column: 1 / -1; } .bento .b5 { grid-column: 1 / -1; } }
+@media (min-width: 640px) and (max-width: 859px) { .voice__stage { grid-template-columns: 1fr; } .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); } .bento .b1 { grid-column: 1 / -1; } }
 /* Landscape phones: the hero mirror must fit the short viewport and stay centred. */
 @media (max-height: 520px) and (orientation: landscape) {
   .hero { min-height: auto; }
@@ -719,3 +725,9 @@ html { scroll-padding-top: calc(var(--header-h) + env(safe-area-inset-top) + 16p
 .side-photo .ph-img { aspect-ratio: 16 / 10; height: auto; }
 .tile--photo .ph-img { border-radius: 0; height: auto; }
 .lb-img { width: 100%; max-height: 70dvh; object-fit: contain; border-radius: var(--r); }
+/* The plate sits above the text (titles were printed over the plate in the smaller cards). */
+.dish { padding: 0; min-height: 0; justify-content: flex-start; }
+.dish__art { position: relative; inset: auto; z-index: 0; flex: 1; padding: clamp(20px, 3vw, 30px) 20px 0; }
+.dish__art svg { width: min(60%, 230px); }
+.b1 .dish__art svg { width: min(64%, 400px); }
+.dish__body { margin: 0; padding: 14px clamp(20px, 3vw, 34px) clamp(20px, 3vw, 30px); background: none; }
